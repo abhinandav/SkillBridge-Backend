@@ -11,7 +11,7 @@ SECRET_KEY = 'django-insecure-+b@00oq^#k%u^gdjt=ff93w0#4q7x=lqmvjf^l=*0rrao6hn8z
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -109,14 +109,15 @@ CHANNEL_LAYERS = {
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Sproject',
-        'USER': 'postgres',
-        'PASSWORD': '1234',
-        'HOST':'localhost',
-        'PORT': '5432'
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'myproject',
+        'USER': 'myprojectuser',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
+
 
 
 # Password validation
@@ -154,6 +155,8 @@ USE_TZ = True
 
 
 STATIC_URL = 'static/'
+import os
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
