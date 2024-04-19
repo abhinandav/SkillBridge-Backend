@@ -62,6 +62,7 @@ class UserDetailsUpdate(APIView):
 
 
 class CourseListCreateAPIView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
@@ -76,6 +77,7 @@ class CourseListCreateAPIView(generics.ListCreateAPIView):
 
 
 class CourseDetailView(generics.RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
     serializer_class = CourseSerializer
     lookup_url_kwarg = 'id'
 
@@ -90,6 +92,7 @@ class CourseDetailView(generics.RetrieveAPIView):
     
 
 class CourseDetailView(RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
     lookup_field = 'id'
@@ -112,6 +115,7 @@ class CourseDetailView(RetrieveAPIView):
 
 
 class VideoDetailView(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request, course_id, video_id):
         try:
             video = Videos.objects.get(course_id=course_id, id=video_id)
@@ -124,6 +128,7 @@ class VideoDetailView(APIView):
 
 
 class OrderCreateAPIView(APIView):
+    permission_classes = [IsAuthenticated]
     def post(self, request, format=None):
         mutable_data = request.data.copy()
         mutable_data['user'] = request.user.id
@@ -139,6 +144,7 @@ class OrderCreateAPIView(APIView):
     
 
 class CheckCoursePurchaseAPIView(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request, course_id, format=None):
         print(request.user)
         if not request.user:
@@ -154,6 +160,7 @@ class CheckCoursePurchaseAPIView(APIView):
         
 
 class PurchasedCoursesListAPIView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
     serializer_class = OrderMycourseSerializer
     permission_classes = [IsAuthenticated]
 
@@ -165,6 +172,7 @@ class PurchasedCoursesListAPIView(generics.ListAPIView):
 
 
 class CommentCreateView(APIView):
+    permission_classes = [IsAuthenticated]
     def post(self, request, *args, **kwargs):
         request.data['user'] = request.user.id
         serializer = CommentSerializer(data=request.data)
@@ -175,6 +183,7 @@ class CommentCreateView(APIView):
     
 
 class VideoCommentsView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
     serializer_class = CommentSerializer
     def get_queryset(self):
         video_id = self.kwargs['video_id']
@@ -185,6 +194,7 @@ class VideoCommentsView(generics.ListAPIView):
 
 
 class CommentUpdateView(APIView):
+    permission_classes = [IsAuthenticated]
     def put(self, request, pk, *args, **kwargs):
         try:
             comment = Comment.objects.get(pk=pk)
@@ -206,6 +216,7 @@ class CommentUpdateView(APIView):
 
 
 class AddReplyAPIView(APIView):
+    permission_classes = [IsAuthenticated]
     print('working')
     def post(self, request, comment_id):
         # print(request.data)
@@ -218,6 +229,7 @@ class AddReplyAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class GetRepliesAPIView(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request, comment_id):
         comment = get_object_or_404(Comment, pk=comment_id)
         replies = Reply.objects.filter(comment=comment)
@@ -230,6 +242,7 @@ class GetRepliesAPIView(APIView):
 
 
 class ReplyUpdateView(APIView):
+    permission_classes = [IsAuthenticated]
     def put(self, request, pk, *args, **kwargs):
         reply = Reply.objects.get(pk=pk)
         try:
