@@ -62,7 +62,6 @@ class UserDetailsUpdate(APIView):
 
 
 class CourseListCreateAPIView(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
@@ -77,7 +76,6 @@ class CourseListCreateAPIView(generics.ListCreateAPIView):
 
 
 class CourseDetailView(generics.RetrieveAPIView):
-    permission_classes = [IsAuthenticated]
     serializer_class = CourseSerializer
     lookup_url_kwarg = 'id'
 
@@ -92,7 +90,6 @@ class CourseDetailView(generics.RetrieveAPIView):
     
 
 class CourseDetailView(RetrieveAPIView):
-    permission_classes = [IsAuthenticated]
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
     lookup_field = 'id'
@@ -144,7 +141,6 @@ class OrderCreateAPIView(APIView):
     
 
 class CheckCoursePurchaseAPIView(APIView):
-    permission_classes = [IsAuthenticated]
     def get(self, request, course_id, format=None):
         print(request.user)
         if not request.user:
@@ -162,7 +158,6 @@ class CheckCoursePurchaseAPIView(APIView):
 class PurchasedCoursesListAPIView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = OrderMycourseSerializer
-    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
