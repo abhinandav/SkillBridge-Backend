@@ -277,6 +277,18 @@ class MarkVideoAsWatched(APIView):
                 return Response({'message': 'User has already watched this video'}, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Video ID not provided'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        
+class ViewedVideos(APIView):
+    def get(self, request):
+        uid = request.query_params.get('uid')
+        try:
+            user = User.objects.get(id=uid)
+            viewed_videos = VideoView.objects.filter(user=user).values_list('video_id', flat=True)
+            return Response({'viewed_video_ids': list(viewed_videos)}, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
 
 
 class CheckAllVideosWatched(APIView):

@@ -26,6 +26,8 @@ urlpatterns=[
     path('view_status/<int:id>/', MarkVideoAsWatched.as_view(), name='view_status'),
     path('check_all_videos_watched/<int:course_id>/', CheckAllVideosWatched.as_view(), name='check_all_videos_watched'),
     path('certificate/',CertificateView.as_view()),
+    path('viewed_videos/',ViewedVideos.as_view()),
+
 
     path('pay/', start_payment, name="payment"),
 
