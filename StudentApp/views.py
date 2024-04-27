@@ -262,6 +262,87 @@ class ReplyUpdateView(APIView):
 
 
 
+class MarkVideoAsWatched(APIView):
+    def post(self, request,id):
+        uid = request.data.get('id')
+        user=User.objects.get(id=uid)
+        print(user)
+        if user:
+            video = Videos.objects.get( id=id)
+            if not VideoView.objects.filter(user=user, video=video).exists():
+                video_view = VideoView(user=user, video=video)
+                video_view.save()
+                return Response({'message': 'Video marked as watched'}, status=status.HTTP_200_OK)
+            else:
+                return Response({'message': 'User has already watched this video'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Video ID not provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CheckAllVideosWatched(APIView):
+    def get(self, request, course_id):
+        user = request.user
+        course = Course.objects.filter(id=course_id).first()
+        
+        if not course:
+            return Response({'error': 'Course not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        videos = Videos.objects.filter(course=course)
+        watched_videos = VideoView.objects.filter(user=user, video__in=videos)
+
+        all_videos_watched = len(watched_videos) == len(videos)
+        
+        return Response({'all_videos_watched': all_videos_watched}, status=status.HTTP_200_OK)
+    
+
+class CertificateView(APIView):
+    print('cbsbbhfdbhsjdbjbjf')
+    def get(self, request):
+        vid = request.query_params.get('id')
+        print(vid)
+        uid = request.query_params.get('uid')
+        print(uid)
+
+        try:
+            course = Course.objects.get(id=vid)
+            user = User.objects.get(id=uid)
+
+            course_name = course.course_name
+            print(course_name)
+            user_name = user.username
+            print(user_name)
+            data = {
+                'course_name': course_name,
+                'user_name': user_name,
+            }
+            print(data)
+            return Response(data, status=status.HTTP_200_OK)
+
+        except Videos.DoesNotExist:
+            return Response({'error': 'Video not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        except User.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

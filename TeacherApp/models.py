@@ -44,3 +44,14 @@ class Videos(models.Model):
     def __str__(self) -> str:
         return f" {self.video_name} of {self.course.course_name}  added by {self.course.added_by.username}"
     
+
+
+from django.utils import timezone
+
+class VideoView(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    video = models.ForeignKey(Videos, on_delete=models.CASCADE)
+    viewed_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self) -> str:
+        return f" {self.user.username} Watched  {self.video.video_name} "
