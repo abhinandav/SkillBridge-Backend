@@ -217,7 +217,7 @@ SIMPLE_JWT = {
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
-CSRF_TRUSTED_ORIGINS = ['https://skillbridge.store','http://localhost:5173']
+CSRF_TRUSTED_ORIGINS = ['https://learning.toeman.online','http://localhost:5173']
 
 CORS_ALLOW_METHODS = [
     'DELETE',
